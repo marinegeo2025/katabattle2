@@ -1,0 +1,6 @@
+{
+  "name": "kata-battle",
+  "type": "module",
+  "private": true,
+  "dependencies": { "@supabase/supabase-js": "^2.45.0" }
+}

@@ -1,0 +1,141 @@
+body {
+  font-family: 'Noto Serif JP', serif;
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 480px;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+}
+
+h2, h3 {
+  font-family: 'Rock Salt', cursive;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
+}
+
+.jp-text {
+  font-size: 10px;
+  font-family: "Noto Sans JP", "Yu Gothic", "Hiragino Kaku Gothic Pro", "MS PGothic", sans-serif;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  border: 2px solid #ff9800;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  background-color: #fff;
+  color: #000;
+  -webkit-user-select: auto;
+  -webkit-touch-callout: default;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 8px;
+}
+
+#competitorList, #judgeList {
+  list-style-type: none !important;
+  padding: 0 !important;
+  text-align: center !important;
+  font-family: 'Rock Salt', cursive !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 4px 0 10px 0;
+}
+
+#competitorList li, #judgeList li {
+  font-size: 20px !important;
+  margin: 4px 0 !important;
+  text-transform: uppercase !important;
+  font-weight: normal !important;
+}
+
+button {
+  background: #b71c1c;
+  color: white;
+  border: 2px solid #9c0000;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 12px 25px;
+  margin-top: 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease-in-out;
+  display: block;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button:hover {
+  background: #ff3d00;
+  transform: scale(1.1);
+}
+
+/* VS banner */
+.kata-battle-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kata-fighter {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 15px 20px;
+  background: linear-gradient(45deg, #ff5722, #ff9800);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px rgba(255, 87, 34, 0.7);
+  text-transform: uppercase;
+  font-family: 'Rock Salt', cursive;
+  text-align: center;
+  display: inline-block;
+  max-width: 90%;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.kata-vs {
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffeb3b;
+  text-shadow: 3px 3px 10px rgba(255, 235, 59, 0.8);
+  margin: 20px 0;
+}
+
+.embed-row { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .embed-row { grid-template-columns: 1fr 1fr; } }
+.embed-row iframe { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 10px; }
+
+.footer {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 30px;
+  color: #bbb;
+  font-family: 'Rock Salt', cursive;
+}
+
+.footer a { color: #ff9800; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+.ossu {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #ffeb3b;
+  text-shadow: 2px 2px 5px rgba(255, 235, 59, 0.8);
+}

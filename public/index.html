@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kata Battle Royale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&family=Rock+Salt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+  <script defer src="/script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Kata Battle</h2>
+    <p class="jp-text">
+      Create a new battle by choosing a custom ID, or join an existing battle by ID.<br>
+      Once in the room, competitors sign up at the top and judges sign up below. A judge hits FIGHT to select two competitors for the round. Fighters upload within 48 hours. Judges score 0–10 (0.1 steps). Highest total wins.<br>OSSU!
+    </p>
+
+    <!-- Welcome -->
+    <div id="welcome" style="display:none;">
+      <h3>Create or Join</h3>
+      <input id="newId" placeholder="Custom ID (e.g., dojo-night)" autocomplete="off" />
+      <input id="newName" placeholder="Battle name (optional)" autocomplete="off" />
+      <button id="createBtn">Create Battle</button>
+      <hr>
+      <input id="joinId" placeholder="Enter Battle ID to join" autocomplete="off" />
+      <button id="joinBtn">Join Battle</button>
+    </div>
+
+    <!-- Room -->
+    <div id="room" style="display:none;">
+      <h3 id="battleTitle"></h3>
+
+      <h3>Competitors</h3>
+      <ul id="competitorList"></ul>
+      <div id="competitorJoin">
+        <input id="competitorName" placeholder="Your name" autocomplete="off" />
+        <button id="competitorJoinBtn">Join as Competitor</button>
+      </div>
+
+      <h3>Judges</h3>
+      <ul id="judgeList"></ul>
+      <div id="judgeJoin">
+        <input id="judgeName" placeholder="Your name" autocomplete="off" />
+        <button id="judgeJoinBtn">Join as Judge</button>
+        <div id="judgeCodeView" class="jp-text"></div>
+      </div>
+
+      <button id="fightBtn" style="display:none;">KATA BATTLE</button>
+
+      <h2 id="vsBanner"></h2>
+      <div id="deadline" class="jp-text"></div>
+
+      <div id="uploadRow" class="embed-row" style="display:none;">
+        <div>
+          <div><b id="aName"></b></div>
+          <button id="uploadA">Upload A</button>
+          <div id="statusA" class="jp-text"></div>
+        </div>
+        <div>
+          <div><b id="bName"></b></div>
+          <button id="uploadB">Upload B</button>
+          <div id="statusB" class="jp-text"></div>
+        </div>
+      </div>
+
+      <div id="players" class="embed-row" style="display:none;"></div>
+
+      <div id="judgeScoring" style="display:none;">
+        <p>Enter scores (0–10, 0.1 steps):</p>
+        <div>
+          <label><span id="sAname"></span>:
+            <input id="scoreA" type="number" min="0" max="10" step="0.1">
+          </label>
+        </div>
+        <div>
+          <label><span id="sBname"></span>:
+            <input id="scoreB" type="number" min="0" max="10" step="0.1">
+          </label>
+        </div>
+        <button id="submitScores">Submit Scores</button>
+      </div>
+
+      <div id="scoreboard"></div>
+
+      <button id="closeBtn" style="display:none;">Close Judging & Announce Winner</button>
+
+      <div id="winnerView" style="font-size:22px; margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p id="license">
+      This training tool is shared under a
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+        Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+      </a> licence.
+    </p>
+    <p id="credits">
+      Thanks to Shihan John Murray and students at Stornoway Karate Club
+      (<a href="https://ijka.uk/" target="_blank">IJKA</a>) for the inspiration.
+    </p>
+    <p>Created by Alex Barnard using <a href="https://glitch.com/" target="_blank">Glitch</a>.</p>
+    <p class="ossu">OSSU! 🥋</p>
+  </div>
+</body>
+</html>

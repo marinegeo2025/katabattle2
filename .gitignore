@@ -1,0 +1,14 @@
+# Node & tooling
+node_modules
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+
+# Vercel local metadata
+.vercel
+
+# Environment files – never commit secrets
+.env
+.env.*
+!.env.example
