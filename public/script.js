@@ -303,5 +303,5 @@ if (state.scoreboard?.B) {
   }
 
   await refresh();
-  setInterval(refresh, 5000);
+ // setInterval(refresh, 5000);
 });
