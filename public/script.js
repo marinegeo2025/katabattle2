@@ -129,19 +129,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   input.click();
 }
 
- $("closeBtn").onclick = async () => {
-    if (!judgeCode) return alert("Join as a judge first.");
-    const r = await fetch(`/api/battles/${slug}/close`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ judgeCode })
-    });
-    const j = await r.json();
-    if (!r.ok) return alert(j.message || "Close failed");
-    $("winnerView").textContent = `🏆 Winner: ${j.winner}`;
-    refresh();
-  };
-
   function renderCompetitors(list) {
     const ul = $("competitorList");
     ul.innerHTML = "";
