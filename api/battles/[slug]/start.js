@@ -1,5 +1,5 @@
 // api/battles/[slug]/start.js
-import { loadBattle, saveBattle, sha256 } from "../../_utils.js";
+import { loadBattle, saveBattle, sha256 } from "../../../_utils.js";
 
 function pickTwo(list) {
   const s = [...list].sort(() => 0.5 - Math.random());
