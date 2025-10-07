@@ -34,20 +34,34 @@ export default async function handler(req, res) {
     doc.scores = doc.scores || [];
 
     // Update existing or insert new score
-    const existing = doc.scores.find(
-      s => s.judgeCodeHash === judge.codeHash && s.fighter === fighter
-    );
-    if (existing) {
-      Object.assign(existing, scoreRecord);
-    } else {
-      doc.scores.push(scoreRecord);
-    }
-
-    await saveBattle(slug, doc);
-
-    res.json({ ok: true, scores: doc.scores });
-  } catch (e) {
-    console.error("judge-score error:", e);
-    res.status(500).json({ message: e.message || "Server error" });
-  }
+const existing = doc.scores.find(
+  s => s.judgeCodeHash === judge.codeHash && s.fighter === fighter
+);
+if (existing) {
+  Object.assign(existing, scoreRecord);
+} else {
+  doc.scores.push(scoreRecord);
 }
+
+// --- Calculate averages ---
+function calcAverage(scores, fighterKey) {
+  const fscores = scores.filter(s => s.fighter === fighterKey);
+  if (!fscores.length) return { count: 0, avg: 0 };
+  const avg = fscores.reduce((sum, s) => sum + (s.final || 0), 0) / fscores.length;
+  return { count: fscores.length, avg: +avg.toFixed(2) };
+}
+
+doc.scoreboard = {
+  A: calcAverage(doc.scores, "A"),
+  B: calcAverage(doc.scores, "B")
+};
+
+// Save everything once
+await saveBattle(slug, doc);
+
+// Respond once
+res.json({
+  ok: true,
+  scores: doc.scores,
+  scoreboard: doc.scoreboard
+});
