@@ -1,4 +1,4 @@
-// api/battles/[slug]/join-competitor.js
+// api/battles/[slug]/join-competitor.js bb
 import { loadBattle, saveBattle } from "../../../_utils.js";
 
 export default async function handler(req, res) {
