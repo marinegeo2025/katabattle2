@@ -14,38 +14,50 @@ export default async function handler(req, res) {
 
     const A = doc.round?.fighterA?.video?.uploadId === uploadId;
     const B = doc.round?.fighterB?.video?.uploadId === uploadId;
-    if (!A && !B)
+    if (!A && !B) {
       return res.status(400).json({ ready: false, message: "Unknown uploadId" });
+    }
 
-    // 1️⃣ Get upload info
+    // 1️⃣ Upload → Asset
     const upload = await muxGetUpload(uploadId);
     if (!upload.asset_id) return res.json({ ready: false });
 
-    // 2️⃣ Get asset info
+    // 2️⃣ Asset → Playback ID
     const asset = await muxGetAsset(upload.asset_id);
 
-    // 3️⃣ Find or create public playback ID
-    let pid = asset.playback_ids?.find(p => p.policy === "public")?.id;
-    if (asset.status === "ready" && !pid) {
+    // Find or create a PUBLIC playback ID
+    let playbackId = asset.playback_ids?.find(p => p.policy === "public")?.id;
+    if (asset.status === "ready" && !playbackId) {
       const created = await muxCreatePlaybackId(upload.asset_id, "public");
-      pid = created.id;
+      playbackId = created.id;
     }
 
-    // 4️⃣ Wait until ready + playback ID available
-    if (!(asset.status === "ready" && pid)) return res.json({ ready: false });
+    // 3️⃣ If not ready yet, keep polling
+    if (!(asset.status === "ready" && playbackId)) {
+      return res.json({ ready: false });
+    }
 
-    // 5️⃣ Save playback ID to Supabase
+    // 4️⃣ Save playback ID, not asset ID, as video.uid
     const slot = A ? doc.round.fighterA : doc.round.fighterB;
-    slot.video = { ...(slot.video || {}), assetId: upload.asset_id, uid: pid, ready: true };
+    slot.video = {
+      ...(slot.video || {}),
+      assetId: upload.asset_id,
+      playbackId,    // store playback separately
+      uid: playbackId, // <- iframe uses this one
+      ready: true
+    };
 
-    // 6️⃣ Open judging when both ready
-    if (doc.status === "awaiting_videos" &&
-        doc.round?.fighterA?.video?.ready && doc.round?.fighterB?.video?.ready) {
+    // 5️⃣ Mark judging open once both ready
+    if (
+      doc.status === "awaiting_videos" &&
+      doc.round?.fighterA?.video?.ready &&
+      doc.round?.fighterB?.video?.ready
+    ) {
       doc.status = "judging_open";
     }
 
     await saveBattle(slug, doc);
-    res.json({ ready: true, uid: pid });
+    res.json({ ready: true, uid: playbackId });
   } catch (e) {
     console.error("video-status error:", e);
     res.status(500).json({ ready: false, message: e.message || "status error" });
