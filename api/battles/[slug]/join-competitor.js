@@ -1,5 +1,5 @@
 // api/battles/[slug]/join-competitor.js
-import { loadBattle, saveBattle } from "../../_utils.js";
+import { loadBattle, saveBattle } from "../../../_utils.js";
 
 export default async function handler(req, res) {
   const { slug } = req.query;
