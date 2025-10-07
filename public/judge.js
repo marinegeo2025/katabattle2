@@ -88,6 +88,7 @@ export function renderJudgePanel(slug, judgeCode, fighterKey, fighterName) {
 
         // Immediately refresh the battle view so averages/winner appear
         if (window.refresh) await window.refresh();
+        else location.reload();
 
         // Optional: friendly toast/alert
         alert(`Score for ${fighterName}: ${score.toFixed(2)} submitted!`);
