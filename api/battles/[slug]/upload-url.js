@@ -1,5 +1,5 @@
 // api/battles/[slug]/upload-url.js
-import { loadBattle, saveBattle, muxCreateDirectUpload } from "../../../_utils.js";
+import { loadBattle, saveBattle, muxCreateDirectUpload } from "../../_utils.js";
 
 export default async function handler(req, res) {
   try {
