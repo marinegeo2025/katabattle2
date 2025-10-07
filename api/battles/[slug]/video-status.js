@@ -1,7 +1,7 @@
 import {
   loadBattle, saveBattle,
   muxGetUpload, muxGetAsset, muxCreatePlaybackId
-} from "../../../_utils.js";  // 👈 correct relative path
+} from "../../_utils.js";  // 👈 correct relative path
 
 export default async function handler(req, res) {
   try {
