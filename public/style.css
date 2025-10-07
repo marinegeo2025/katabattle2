@@ -139,3 +139,40 @@ button:hover {
   color: #ffeb3b;
   text-shadow: 2px 2px 5px rgba(255, 235, 59, 0.8);
 }
+.judge-panel {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  text-align: center;
+}
+.score-display {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffeb3b;
+  margin-bottom: 10px;
+}
+.judge-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.judge-buttons button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+button.deduct { background: #b71c1c; color: white; }
+button.add { background: #2e7d32; color: white; }
+button.submit-score {
+  margin-top: 10px;
+  padding: 10px;
+  font-weight: bold;
+  background: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
