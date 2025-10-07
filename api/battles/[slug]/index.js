@@ -1,5 +1,5 @@
 // api/battles/[slug]/index.js
-import { loadBattle, mask } from "../../_utils.js";
+import { loadBattle, mask } from "../../../_utils.js";
 
 export default async function handler(req, res) {
   const { slug } = req.query;
