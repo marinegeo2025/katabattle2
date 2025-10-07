@@ -280,6 +280,16 @@ if (state.status === "judging_open" && judgeCode) {
     renderRound();
     renderScoreboard(state.scoreboard);
 
+    // Update live averages under each video
+if (state.scoreboard?.A) {
+  const aEl = document.getElementById("avgA");
+  if (aEl) aEl.textContent = `🏅 Avg: ${state.scoreboard.A.avg.toFixed(2)} (${state.scoreboard.A.count})`;
+}
+if (state.scoreboard?.B) {
+  const bEl = document.getElementById("avgB");
+  if (bEl) bEl.textContent = `🏅 Avg: ${state.scoreboard.B.avg.toFixed(2)} (${state.scoreboard.B.count})`;
+}
+
     const judgeJoined = !!judgeCode;
     $("fightBtn").style.display = (state.status === "enrolling" && judgeJoined) ? "block" : "none";
     $("judgeScoring").style.display = (state.status === "judging_open" && judgeJoined) ? "block" : "none";
