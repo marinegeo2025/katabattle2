@@ -129,21 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   input.click();
 }
 
-  $("submitScores").onclick = async () => {
-    if (!judgeCode) return alert("Join as a judge first.");
-    const A = Number($("scoreA").value);
-    const B = Number($("scoreB").value);
-    const r = await fetch(`/api/battles/${slug}/submit-scores`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ judgeCode, A, B })
-    });
-    const j = await r.json();
-    if (!r.ok) return alert(j.message || "Score submit failed");
-    renderScoreboard(j.scoreboard);
-  };
-
-  $("closeBtn").onclick = async () => {
+ $("closeBtn").onclick = async () => {
     if (!judgeCode) return alert("Join as a judge first.");
     const r = await fetch(`/api/battles/${slug}/close`, {
       method: "POST",
