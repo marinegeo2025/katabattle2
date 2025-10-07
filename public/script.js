@@ -11,24 +11,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!slug) {
     welcome.style.display = "block";
     $("createBtn").onclick = async () => {
-      const customId = $("newId").value.trim();
-      const name = $("newName").value.trim();
-      const r = await fetch("/api/battles", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customId, name })
-      });
-      const j = await r.json();
-      if (!r.ok) return alert(j.message || "Create failed");
-      location.href = j.url;
-    };
-    $("joinBtn").onclick = () => {
-      const id = $("joinId").value.trim();
-      if (!id) return;
-      location.href = `/b/${id}`;
-    };
-    return;
+  const customId = $("newId").value.trim();
+  const name = $("newName").value.trim();
+
+  try {
+    const r = await fetch("/api/battles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ customId, name })
+    });
+
+    // Don't assume JSON when the server returns an HTML 500 page
+    const raw = await r.text();
+    let j = {};
+    try { j = raw ? JSON.parse(raw) : {}; } catch { /* leave j as {} */ }
+
+    if (!r.ok) throw new Error(j.message || `HTTP ${r.status}`);
+
+    // If server didn't send an absolute url (APP_BASE_URL missing), use a safe relative path
+    const target = j.url || (j.slug ? `/b/${j.slug}` : null);
+    if (!target) throw new Error("Create succeeded but no URL/slug returned.");
+    location.href = target;
+
+  } catch (err) {
+    console.error("Create battle failed:", err);
+    alert(`Create failed: ${err.message || "Unknown error"}`);
   }
+};
 
   // --- Room view ---
   room.style.display = "block";
