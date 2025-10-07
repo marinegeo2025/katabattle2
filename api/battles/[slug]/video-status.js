@@ -17,36 +17,30 @@ export default async function handler(req, res) {
     if (!A && !B)
       return res.status(400).json({ ready: false, message: "Unknown uploadId" });
 
-    // 1) upload → asset
+    // 1️⃣ Get upload info
     const upload = await muxGetUpload(uploadId);
     if (!upload.asset_id) return res.json({ ready: false });
 
-    // 2) asset → playback ID
+    // 2️⃣ Get asset info
     const asset = await muxGetAsset(upload.asset_id);
 
-    // Find or create a public playback ID
+    // 3️⃣ Find or create public playback ID
     let pid = asset.playback_ids?.find(p => p.policy === "public")?.id;
     if (asset.status === "ready" && !pid) {
       const created = await muxCreatePlaybackId(upload.asset_id, "public");
       pid = created.id;
     }
 
-    // If not ready yet, keep polling
+    // 4️⃣ Wait until ready + playback ID available
     if (!(asset.status === "ready" && pid)) return res.json({ ready: false });
 
-    // 3) Save playback ID in Supabase
+    // 5️⃣ Save playback ID to Supabase
     const slot = A ? doc.round.fighterA : doc.round.fighterB;
-    slot.video = {
-      ...(slot.video || {}),
-      assetId: upload.asset_id,
-      uid: pid,      // ✅ this is what the iframe uses
-      ready: true
-    };
+    slot.video = { ...(slot.video || {}), assetId: upload.asset_id, uid: pid, ready: true };
 
-    // 4) Open judging once both ready
+    // 6️⃣ Open judging when both ready
     if (doc.status === "awaiting_videos" &&
-        doc.round?.fighterA?.video?.ready &&
-        doc.round?.fighterB?.video?.ready) {
+        doc.round?.fighterA?.video?.ready && doc.round?.fighterB?.video?.ready) {
       doc.status = "judging_open";
     }
 
