@@ -253,10 +253,16 @@ if (state.status === "judging_open" && judgeCode) {
   function renderScoreboard(sb) {
     if (!sb || !state.round) { $("scoreboard").innerHTML = ""; return; }
     $("scoreboard").innerHTML = `
-      <h3>Live Scores</h3>
-      <div><b>${state.round.fighterA.name}</b> — Total: ${sb.A.total?.toFixed?.(1) ?? sb.A.total} | Avg: ${sb.A.average} (Judges: ${sb.A.count})</div>
-      <div><b>${state.round.fighterB.name}</b> — Total: ${sb.B.total?.toFixed?.(1) ?? sb.B.total} | Avg: ${sb.B.average} (Judges: ${sb.B.count})</div>
-    `;
+  <h3>Live Scores</h3>
+  <div><b>${state.round.fighterA.name}</b> — 
+    Avg: ${(sb.A?.avg ?? sb.A?.average ?? 0).toFixed(2)} 
+    (Judges: ${sb.A?.count ?? 0})
+  </div>
+  <div><b>${state.round.fighterB.name}</b> — 
+    Avg: ${(sb.B?.avg ?? sb.B?.average ?? 0).toFixed(2)} 
+    (Judges: ${sb.B?.count ?? 0})
+  </div>
+`;
   }
 
   function fmt(ms) {
