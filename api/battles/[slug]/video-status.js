@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       playbackId = created.id;
     }
 
-    // 3️⃣ If not ready yet, keep polling
+    // 3️⃣ If not ready yet, keep polling fake text to trigger deploy
     if (!(asset.status === "ready" && playbackId)) {
       return res.json({ ready: false });
     }
