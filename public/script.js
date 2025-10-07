@@ -226,15 +226,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     p.innerHTML = `
-  <div><b>${r.fighterA.name}</b>
+  <div class="video-block">
+    <b>${r.fighterA.name}</b>
     <iframe src="https://player.mux.com/${r.fighterA.video.playbackId}"
       allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
       allowfullscreen></iframe>
+    <div class="live-score" id="avgA">🏅 Avg: --</div>
   </div>
-  <div><b>${r.fighterB.name}</b>
+
+  <div class="video-block">
+    <b>${r.fighterB.name}</b>
     <iframe src="https://player.mux.com/${r.fighterB.video.playbackId}"
       allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
       allowfullscreen></iframe>
+    <div class="live-score" id="avgB">🏅 Avg: --</div>
   </div>
 `;
 
