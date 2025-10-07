@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (state.status === "awaiting_videos") {
   $("uploadRow").style.display = "grid";
+    $("deadline").textContent = "🎥 Upload your kata videos below!";
   $("players").style.display = "none";
 
   if (state.status === "awaiting_videos") {
