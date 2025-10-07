@@ -1,5 +1,5 @@
 // api/battles/[slug]/submit-scores.js
-import { loadBattle, saveBattle, sha256 } from "../../_utils.js";
+import { loadBattle, saveBattle, sha256 } from "../../../_utils.js";
 
 export default async function handler(req, res) {
   const { slug } = req.query;
