@@ -176,3 +176,22 @@ button.submit-score {
   border: none;
   border-radius: 6px;
 }
+.video-block {
+  position: relative;
+  text-align: center;
+}
+
+.live-score {
+  font-size: 22px;
+  color: #ffeb3b;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+  margin-top: 6px;
+  font-family: 'Rock Salt', cursive;
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.7; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.05); }
+}
+
