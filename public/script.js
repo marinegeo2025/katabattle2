@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const r = state.round;
   $("deadline").textContent = "";
 
+  // No round yet
   if (!r) {
     $("vsBanner").innerHTML = "";
     $("uploadRow").style.display = "none";
@@ -155,6 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // Display the matchup
   $("vsBanner").innerHTML = `
     <div class="kata-battle-container">
       <div class="kata-fighter">${r.fighterA.name}</div>
@@ -162,37 +164,43 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="kata-fighter">${r.fighterB.name}</div>
     </div>
   `;
+
   $("aName").textContent = r.fighterA.name;
   $("bName").textContent = r.fighterB.name;
   $("sAname").textContent = r.fighterA.name;
   $("sBname").textContent = r.fighterB.name;
 
+  // ---------------------------------------------------
+  //  PHASE 1 — AWAITING VIDEOS
+  // ---------------------------------------------------
   if (state.status === "awaiting_videos") {
-  $("uploadRow").style.display = "grid";
+    $("uploadRow").style.display = "grid";
+    $("players").style.display = "none";
     $("deadline").textContent = "🎥 Upload your kata videos below!";
-  $("players").style.display = "none";
 
-  if (state.status === "awaiting_videos") {
-  $("uploadRow").style.display = "grid";
-  $("players").style.display = "none";
+    if (state.uploadDeadlineAt) {
+      if (countdownTimer) clearInterval(countdownTimer);
+      const tick = () => {
+        const ms = new Date(state.uploadDeadlineAt) - new Date();
+        $("deadline").textContent = ms > 0
+          ? `Upload window closes in ${fmt(ms)}`
+          : `Upload window has closed`;
+      };
+      tick();
+      countdownTimer = setInterval(tick, 1000);
+    }
 
-  if (state.uploadDeadlineAt) {
-    if (countdownTimer) clearInterval(countdownTimer);
-    const tick = () => {
-      const ms = new Date(state.uploadDeadlineAt) - new Date();
-      $("deadline").textContent = ms > 0
-        ? `Upload window closes in ${fmt(ms)}`
-        : `Upload window has closed`;
-    };
-    tick();
-    countdownTimer = setInterval(tick, 1000);
+    return; // stop here — don’t render judging yet
   }
 
-} else if (state.status === "judging_open" || state.status === "archived") {
-  $("uploadRow").style.display = "none"; // hide upload buttons once both videos ready
-  const p = $("players");
-  p.style.display = "grid";
-  const A = r.fighterA.video, B = r.fighterB.video;
+  // ---------------------------------------------------
+  //  PHASE 2 — JUDGING OR ARCHIVED
+  // ---------------------------------------------------
+  if (state.status === "judging_open" || state.status === "archived") {
+    $("uploadRow").style.display = "none";
+    const p = $("players");
+    p.style.display = "grid";
+    const A = r.fighterA.video, B = r.fighterB.video;
 
     console.log("Embedding playback IDs:", { A: A?.uid, B: B?.uid });
 
@@ -202,27 +210,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     p.innerHTML = `
-  <div>
-    <b>${r.fighterA.name}</b>
-    <iframe src="https://player.mux.com/${r.fighterA.video.playbackId}"
-      allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
-      allowfullscreen></iframe>
-    <div id="avgA" class="avg-display">🏅 Avg: --</div>
-  </div>
-  <div>
-    <b>${r.fighterB.name}</b>
-    <iframe src="https://player.mux.com/${r.fighterB.video.playbackId}"
-      allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
-      allowfullscreen></iframe>
-    <div id="avgB" class="avg-display">🏅 Avg: --</div>
-  </div>
-`;
+      <div>
+        <b>${r.fighterA.name}</b>
+        <iframe src="https://player.mux.com/${r.fighterA.video.playbackId}"
+          allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen></iframe>
+        <div id="avgA" class="avg-display">🏅 Avg: --</div>
+      </div>
+      <div>
+        <b>${r.fighterB.name}</b>
+        <iframe src="https://player.mux.com/${r.fighterB.video.playbackId}"
+          allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen></iframe>
+        <div id="avgB" class="avg-display">🏅 Avg: --</div>
+      </div>
+    `;
 
-if (state.status === "judging_open" && judgeCode) {
-  // Append modular judge panels from judge.js
-  p.appendChild(renderJudgePanel(slug, judgeCode, "A", r.fighterA.name));
-  p.appendChild(renderJudgePanel(slug, judgeCode, "B", r.fighterB.name));
-}
+    // Only judges see the scoring panels
+    if (state.status === "judging_open" && judgeCode) {
+      p.appendChild(renderJudgePanel(slug, judgeCode, "A", r.fighterA.name));
+      p.appendChild(renderJudgePanel(slug, judgeCode, "B", r.fighterB.name));
+    }
   }
 }
 
