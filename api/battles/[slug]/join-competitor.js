@@ -1,4 +1,4 @@
-// api/battles/[slug]/join-competitor.js bb
+// api/battles/[slug]/join-competitor.js
 import { loadBattle, saveBattle } from "../../../_utils.js";
 
 export default async function handler(req, res) {
@@ -31,3 +31,4 @@ export default async function handler(req, res) {
     res.status(500).json({ message: e.message || "Server error" });
   }
 }
+
