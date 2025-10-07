@@ -168,28 +168,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("sBname").textContent = r.fighterB.name;
 
   if (state.status === "awaiting_videos") {
-    $("uploadRow").style.display = "grid";
-    $("players").style.display = "none";
+  $("uploadRow").style.display = "grid";
+  $("players").style.display = "none";
 
-    if (state.uploadDeadlineAt) {
-      if (countdownTimer) clearInterval(countdownTimer);
-      const tick = () => {
-        const ms = new Date(state.uploadDeadlineAt) - new Date();
-        $("deadline").textContent = ms > 0
-          ? `Upload window closes in ${fmt(ms)}`
-          : `Upload window has closed`;
-      };
-      tick();
-      countdownTimer = setInterval(tick, 1000);
-    }
-  } else {
-    $("uploadRow").style.display = "none";
+  if (state.status === "awaiting_videos") {
+  $("uploadRow").style.display = "grid";
+  $("players").style.display = "none";
+
+  if (state.uploadDeadlineAt) {
+    if (countdownTimer) clearInterval(countdownTimer);
+    const tick = () => {
+      const ms = new Date(state.uploadDeadlineAt) - new Date();
+      $("deadline").textContent = ms > 0
+        ? `Upload window closes in ${fmt(ms)}`
+        : `Upload window has closed`;
+    };
+    tick();
+    countdownTimer = setInterval(tick, 1000);
   }
 
-  if (state.status === "judging_open" || state.status === "archived") {
-    const p = $("players");
-    p.style.display = "grid";
-    const A = r.fighterA.video, B = r.fighterB.video;
+} else if (state.status === "judging_open" || state.status === "archived") {
+  $("uploadRow").style.display = "none"; // hide upload buttons once both videos ready
+  const p = $("players");
+  p.style.display = "grid";
+  const A = r.fighterA.video, B = r.fighterB.video;
 
     console.log("Embedding playback IDs:", { A: A?.uid, B: B?.uid });
 
