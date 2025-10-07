@@ -64,8 +64,9 @@ export function renderJudgePanel(slug, judgeCode, fighterKey, fighterName) {
   submitBtn.textContent = "✅ Submit Score";
   submitBtn.className = "submit-score";
 
-  submitBtn.onclick = async () => {
+    submitBtn.onclick = async () => {
     if (!judgeCode) return alert("Join as judge first!");
+
     try {
       const r = await fetch(`/api/battles/${slug}/judge-score`, {
         method: "POST",
@@ -79,10 +80,23 @@ export function renderJudgePanel(slug, judgeCode, fighterKey, fighterName) {
           final: score
         })
       });
+
       const j = await r.json();
+
       if (r.ok) {
+        console.log("✅ Saved scores:", j.scores);
+
+        // Immediately refresh the battle view so averages/winner appear
+        if (window.refresh) await window.refresh();
+
+        // Optional: friendly toast/alert
         alert(`Score for ${fighterName}: ${score.toFixed(2)} submitted!`);
-        console.log("Saved scores:", j.scores);
+
+        // Optional: visually disable the panel to prevent resubmission
+        submitBtn.disabled = true;
+        submitBtn.textContent = "✅ Score Submitted";
+        panel.querySelectorAll("button.deduct, button.add").forEach(b => (b.disabled = true));
+
       } else {
         alert(j.message || "Submit failed");
       }
@@ -91,6 +105,7 @@ export function renderJudgePanel(slug, judgeCode, fighterKey, fighterName) {
       alert("Network error while submitting score");
     }
   };
+
   panel.appendChild(submitBtn);
 
   return panel;
