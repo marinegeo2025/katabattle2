@@ -225,17 +225,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     p.innerHTML = `
-      <div><b>${r.fighterA.name}</b>
-        <iframe src="https://player.mux.com/${A.uid}.html"
-          allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-      <div><b>${r.fighterB.name}</b>
-        <iframe src="https://player.mux.com/${B.uid}.html"
-          allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-    `;
+  <div><b>${r.fighterA.name}</b>
+    <iframe src="https://player.mux.com/${r.fighterA.video.playbackId}.html"
+      allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+  <div><b>${r.fighterB.name}</b>
+    <iframe src="https://player.mux.com/${r.fighterB.video.playbackId}.html"
+      allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+`;
   }
 }
 
