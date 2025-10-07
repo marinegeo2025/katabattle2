@@ -1,3 +1,4 @@
+import { renderJudgePanel } from "./judge.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const path = location.pathname;
   const slugMatch = path.match(/^\/b\/([^\/?#]+)/);
@@ -236,6 +237,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       allowfullscreen></iframe>
   </div>
 `;
+
+if (state.status === "judging_open" && judgeCode) {
+  // Append modular judge panels from judge.js
+  p.appendChild(renderJudgePanel(slug, judgeCode, "A", r.fighterA.name));
+  p.appendChild(renderJudgePanel(slug, judgeCode, "B", r.fighterB.name));
+}
   }
 }
 
