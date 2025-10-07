@@ -57,41 +57,36 @@ export default async function handler(req, res) {
     };
 
     // --- Determine if all judges have submitted ---
-    const totalJudges = doc.judges.length;
-    const aCount = doc.scoreboard.A.count;
-    const bCount = doc.scoreboard.B.count;
+const totalJudges = doc.judges.length;
+const aCount = doc.scoreboard.A.count;
+const bCount = doc.scoreboard.B.count;
 
-    if (aCount === totalJudges && bCount === totalJudges) {
-      // All judges submitted both scores
-      const avgA = doc.scoreboard.A.avg;
-      const avgB = doc.scoreboard.B.avg;
+// When at least one score exists for both fighters,
+// and all active judges have submitted their scores for both.
+if (aCount >= 1 && bCount >= 1 && aCount === totalJudges && bCount === totalJudges) {
+  const avgA = doc.scoreboard.A.avg;
+  const avgB = doc.scoreboard.B.avg;
 
-      if (avgA === avgB) {
-        doc.winner = "Draw 🤝";
-      } else if (avgA > avgB) {
-        doc.winner = doc.round.fighterA.name;
-      } else {
-        doc.winner = doc.round.fighterB.name;
-      }
-
-      doc.status = "archived"; // lock the battle
-      console.log(`🏆 Battle ${slug} finished — Winner: ${doc.winner}`);
-    }
-
-    // Save everything once
-    await saveBattle(slug, doc);
-
-    // Respond once
-    res.json({
-      ok: true,
-      scores: doc.scores,
-      scoreboard: doc.scoreboard,
-      winner: doc.winner || null,
-      status: doc.status
-    });
-
-  } catch (e) {
-    console.error("judge-score error:", e);
-    res.status(500).json({ message: e.message || "Server error" });
+  if (avgA === avgB) {
+    doc.winner = "Draw 🤝";
+  } else if (avgA > avgB) {
+    doc.winner = doc.round.fighterA.name;
+  } else {
+    doc.winner = doc.round.fighterB.name;
   }
+
+  doc.status = "archived"; // lock the battle
+  console.log(`🏆 Battle ${slug} finished — Winner: ${doc.winner}`);
 }
+
+// Save everything once
+await saveBattle(slug, doc);
+
+// Respond once
+res.json({
+  ok: true,
+  scores: doc.scores,
+  scoreboard: doc.scoreboard,
+  winner: doc.winner || null,
+  status: doc.status
+});
